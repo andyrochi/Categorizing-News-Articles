@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Categorizing Chinese News Articles from the Web - HackMD
+    </title>
+    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+    <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i|Source+Code+Pro:300,400,500|Source+Sans+Pro:300,300i,400,400i,600,600i|Source+Serif+Pro&subset=latin-ext);.hljs{display:block;background:#fff;padding:.5em;color:#333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-emphasis,.hljs-quote,.hljs-string,.hljs-strong,.hljs-template-variable,.hljs-variable{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-attribute,.hljs-bullet,.hljs-literal,.hljs-number,.hljs-symbol{color:#0086b3}.hljs-built_in,.hljs-builtin-name{color:#005cc5}.hljs-name,.hljs-section{color:#63a35c}.hljs-tag{color:#333}.hljs-attr,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-title{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.markdown-body{font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{font-size:16px;padding:0 1em;color:#777;border-left:.25em solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body kbd,.popover kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid #ccc;border-bottom-color:#bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{color:#000;vertical-align:middle;visibility:hidden}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{padding-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:.2em;padding-bottom:.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\00a0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0 none}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important;position:relative}.markdown-body .emoji{vertical-align:top}.markdown-body pre{border:inherit!important}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.markdown-body code[data-gist-id]{background:none;padding:0}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p:last-child{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit;overflow:visible}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p:last-child,.markdown-body .alert>ul:last-child{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body .mark,.markdown-body mark{background-color:#fff1a7}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.figma{display:table;position:relative;width:100%;padding-bottom:56.25%}.figma iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;border:1px solid #eee}.MJX_Assistive_MathML{display:none}#MathJax_Message{z-index:1000!important}.ui-infobar{position:relative;z-index:2;max-width:760px;margin:25px auto -25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:998}.ui-toc.both-mode{margin-left:8px}.ui-toc.both-mode .ui-toc-label{height:40px;padding:10px 4px;border-top-left-radius:0;border-bottom-left-radius:0}.ui-toc-label{background-color:#e6e6e6;border:none;color:#868686;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff;transition:opacity .2s}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;transition:opacity .2s}.ui-toc-dropdown{margin-top:20px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif}html[lang^=ja] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html .markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html .markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html .markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html[lang^=ja] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html[lang=zh-tw] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html[lang=zh-cn] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}html .ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html .ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html .ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:50%;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:cover}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}.ui-infobar>small>span{line-height:22px}.ui-infobar>small .dropdown{display:inline-block}.ui-infobar>small .dropdown a:focus,.ui-infobar>small .dropdown a:hover{text-decoration:none}.ui-more-info{color:#888;cursor:pointer;vertical-align:middle}.ui-more-info .fa{font-size:16px}.ui-connectedGithub,.ui-published-note{color:#888}.ui-connectedGithub{line-height:23px;white-space:nowrap}.ui-connectedGithub a.file-path{color:#888;text-decoration:none;padding-left:22px}.ui-connectedGithub a.file-path:active,.ui-connectedGithub a.file-path:hover{color:#888;text-decoration:underline}.ui-connectedGithub .fa{font-size:20px}.ui-published-note .fa{font-size:20px;vertical-align:top}.unselectable{-webkit-user-select:none;-o-user-select:none;user-select:none}.selectable{-webkit-user-select:text;-o-user-select:text;user-select:text}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}.site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;letter-spacing:.025em;font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] body{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}abbr[data-original-title],abbr[title]{cursor:help}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid comment-enabled comment-inner" data-hard-breaks="true"><h1 id="Categorizing-Chinese-News-Articles-from-the-Web" data-id="Categorizing-Chinese-News-Articles-from-the-Web"><a class="anchor hidden-xs" href="#Categorizing-Chinese-News-Articles-from-the-Web" title="Categorizing-Chinese-News-Articles-from-the-Web"><span class="octicon octicon-link"></span></a><span>Categorizing Chinese News Articles from the Web</span></h1><p style="font-size: 20px;">2021 Introduction to Machine Learning Final Project Report</p><p><strong><span>Author:</span></strong><span> Chia-Hao Chang (張家豪)</span><br>
+<strong><span>Student ID:</span></strong><span> 0716021</span><br>
+<strong><span>Year:</span></strong><span> 3</span></p><h1 id="I-Introduction" data-id="I-Introduction"><a class="anchor hidden-xs" href="#I-Introduction" title="I-Introduction"><span class="octicon octicon-link"></span></a><span>I. Introduction</span></h1><p><span>In this project, we explore the machine learning pipeline and 3 different methods to do the following task: Categorize Chinese news articles from the web (given the title and content) into one of the following categories:</span></p><ol>
+<li><span>科技 (Technology)</span></li>
+<li><span>產經 (Business and Economy)</span></li>
+<li><span>娛樂 (Entertainment)</span></li>
+<li><span>運動 (Sports)</span></li>
+<li><span>社會 (Society)</span></li>
+<li><span>政治 (Politics)</span></li>
+</ol><h2 id="Motivation" data-id="Motivation"><a class="anchor hidden-xs" href="#Motivation" title="Motivation"><span class="octicon octicon-link"></span></a><span>Motivation</span></h2><p><span>I am a person who enjoys reading news from many different sources and would like to go to a single website and read articles from all of the sources all at once. At the same time, I also want the articles to have categoric labels, so that I can locate the news articles I want easily (by selecting the specific category). As we know, every news website may have their own categorizing schemes, for example:</span></p><p><img src="https://i.imgur.com/MqR5kt8.png" alt="" loading="lazy"><br>
+<img src="https://i.imgur.com/OJAxCPo.png" alt="" loading="lazy"><br>
+<img src="https://i.imgur.com/xNoMPQ4.png" alt="" loading="lazy"></p><p><span>Although the categories are quite specific for each individual source, this becomes a problem when we keep all of the articles in a same place (e.g. a database). This is because there may be duplicate labels, or labels that are too similar and can be put in the same category. Therefore, I would like to find out a generalized way to categorize/classify news articles given the title and content.</span></p><h1 id="II-Data-Collection" data-id="II-Data-Collection"><a class="anchor hidden-xs" href="#II-Data-Collection" title="II-Data-Collection"><span class="octicon octicon-link"></span></a><span>II. Data Collection</span></h1><h2 id="A-News-Source-Selection" data-id="A-News-Source-Selection"><a class="anchor hidden-xs" href="#A-News-Source-Selection" title="A-News-Source-Selection"><span class="octicon octicon-link"></span></a><span>A. News Source Selection</span></h2><p><span>Initially, I considered gathering news articles from 3 to 4 news sources including: The Liberty Times </span><a href="https://www.ltn.com.tw/" target="_blank" rel="noopener"><span>自由時報</span></a><span>, China Times </span><a href="https://www.chinatimes.com/?chdtv" target="_blank" rel="noopener"><span>中國時報</span></a><span>, United Daily </span><a href="https://udn.com/news/index" target="_blank" rel="noopener"><span>聯合新聞網</span></a><span>, and Central News Agency CNA </span><a href="https://www.cna.com.tw/" target="_blank" rel="noopener"><span>中央通訊社</span></a><span>. But after some observation, I’ve realized that since CNA is a </span><em><span>news agency</span></em><span> (通訊社) rather than a </span><em><span>newspaper</span></em><span>, many newspapers may contain articles directly obtained from CNA, which would make creating a dataset difficult (considering the fact that the training set and test set would contain identical data).</span></p><p><span>An example of identical articles is shown here:</span></p><ul>
+<li><a href="https://www.cna.com.tw/news/aopl/202201130033.aspx" target="_blank" rel="noopener"><span>旅客確診者多 中國取消自美入境航班遭華府批評 （CNA）</span></a></li>
+<li><a href="https://udn.com/news/story/121707/6029914" target="_blank" rel="noopener"><span>旅客確診者多 中國取消自美入境航班遭華府批評 （聯合新聞網）</span></a></li>
+</ul><p><span>In order to prevent from identical articles appearing in the test set, I have decided to obtain news articles from The Central News Agency CNA (中央通訊社) only. I will then use the categories defined in the CNA website as the label to predict.</span></p><h2 id="B-Data-Crawling" data-id="B-Data-Crawling"><a class="anchor hidden-xs" href="#B-Data-Crawling" title="B-Data-Crawling"><span class="octicon octicon-link"></span></a><span>B. Data Crawling</span></h2><p><span>In order to obtain articles, I have written a python script that uses BeautifulSoup to crawl all news articles from CNA’s website and stores the data into MongoDB.</span></p><p><span>After selecting relevant information, the info of the obtained dataset is as follows:</span></p><ul>
+<li><span>Number of articles in total: 19826</span></li>
+<li><span>Categories: 6 (科技, 產經, 娛樂, 政治, 社會, 運動)</span></li>
+<li><span>Fields:</span>
+<ul>
+<li><span>Title</span></li>
+<li><span>Content</span></li>
+<li><span>Category (Target to predict)</span></li>
+</ul>
+</li>
+<li><span>News date range:</span>
+<ul>
+<li><span>2021 Februrary ~ 2022 January 10th</span></li>
+</ul>
+</li>
+</ul><p><span>A single article is shown here:</span></p><pre><code class="json hljs"><div class="wrapper"><div class="gutter linenumber"><span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span></div><div class="code"><span class="token punctuation">{</span>
+    '_id'<span class="token operator">:</span> <span class="token punctuation">{</span>'$oid'<span class="token operator">:</span> '602b59c9df6290789c381d06'<span class="token punctuation">}</span><span class="token punctuation">,</span>
+    'title'<span class="token operator">:</span> '修憲工程春節後啟動 柯建銘：絕不走極端'<span class="token punctuation">,</span>
+    'content'<span class="token operator">:</span>
+    <span class="token punctuation">[</span>
+    '（中央社記者溫貴香、王揚宇台北<span class="token number">16</span>日電）力拚<span class="token number">2022</span>憲改公投綁大選，民進黨團總召柯建銘今天表示，春節連假過後將啟動修憲工程，會負責任提出黨版修憲案，並強調任何題目都可以談且都會去思考，但民進黨絕不會走極端。'<span class="token punctuation">,</span>
+    '民進黨立法院黨團總召柯建銘受訪表示，修憲應由總統主導，涉及國家政府體制的建立，這是總統無法迴避的責任，總統也不會迴避，要尊重由總統主導。民進黨是執政黨，要主導國會修憲。'<span class="token punctuation">,</span>
+      '他說，<span class="token number">2019</span>年<span class="token number">12</span>月的美麗島事件<span class="token number">40</span>周年、世界人權日，立法院會三讀通過監察院國家人權委員會組織法，監察院下設國家人權委員會，由監察院長擔任主任委員。同時，修正通過考試院組織法部分條文，考試委員名額從<span class="token number">19</span>人改為<span class="token number">7</span>人至<span class="token number">9</span>人，考試院長、副院長及考試委員任期從<span class="token number">6</span>年改為<span class="token number">4</span>年，與總統任期一致。'<span class="token punctuation">,</span>
+      '柯建銘說，<span class="token number">18</span>歲公民權已是普世價值，過去民進黨一直強烈主張，自創黨以來，民進黨中央從來沒有停止過修憲的討論，這次也是一樣；民進黨執政必須尊重由總統主導修憲，包括中央政府體制、五權變三權、不分區席次票票不等值、閣揆同意權等，民進黨一定會提出一個版本。'<span class="token punctuation">,</span>
+      '柯建銘表示，修憲必須要有黨版，哪些問題可能會成功，哪些問題屬於理念闡述，都必須仔細評估，最後一定會有黨版。他強調，修憲提案沒有併大選絕對不會成功，即使併大選要成功闖關，也必須朝野有高度共識，否則會一事無成。'<span class="token punctuation">,</span>
+      '他表示，修憲提案要併<span class="token number">2022</span>年直轄市暨縣市長選舉，必須先往回推算，約大選日<span class="token number">9</span>個月前要送出修憲提案；因為修憲提案必須先公告半年加上<span class="token number">3</span>個月後投票，總計需<span class="token number">9</span>個月時間，前置作業又包括何時開公聽會、要拋出什麼議題等，必須先行設定期程。'<span class="token punctuation">,</span>
+      '至於修憲併<span class="token number">2022</span>年大選時間是否太趕，柯建銘表示，「不會」，修憲案若不併<span class="token number">2022</span>年大選根本是自殺式修憲，下修<span class="token number">18</span>歲公民權的修憲案，若做民調並不是壓倒性的勝利，必須各政黨高度動員與合作才有可能超過<span class="token number">965</span>萬票，這絕對不是朝野政黨比賽搶功勞、爭功諉過的題目。'<span class="token punctuation">,</span>
+      '柯建銘表示，這次修憲有很多題目，不管是個別立委提案或民間團體倡議，例如環境權、人權入憲、勞動權等，都可以談且都會去思考；另涉及變更領土、國號等敏感性議題，民進黨不會走極端，因為面對世界大變局，兩岸局勢多變，不能有任何挑釁。'<span class="token punctuation">,</span>
+      '他表示，<span class="token number">965</span>萬票是高門檻，修憲不能變成政治舞台表演，把修憲意義破壞掉；<span class="token number">2</span>月<span class="token number">16</span>日春節過後要開始進行，包括設定議題、舉辦公聽會，民進黨有一定的步驟。'<span class="token punctuation">,</span>
+      '民進黨立法院黨團修憲小組由柯建銘親自領軍並設有雙召委機制，由資深立委管碧玲、具法律專業背景立委周春米，在總統主導下，府院黨加上黨團協力共同推動；總統府則由副秘書長李俊俋、民進黨秘書長林錫耀、行政院政務委員羅秉成，加上立法院黨團三長，最後提出黨版修憲案。'<span class="token punctuation">,</span>
+      '柯建銘表示，<span class="token number">2022</span>年若<span class="token number">18</span>歲公民權修憲案沒有通過，這說不過去，這是「我們這一代政治人物的責任」，因為過關是高門檻，朝野必須高度動員。'<span class="token punctuation">,</span>
+      '憲法增修條文第<span class="token number">12</span>條規定，「憲法之修改，須經立法院立法委員<span class="token number">1</span>/<span class="token number">4</span>之提議，<span class="token number">3</span>/<span class="token number">4</span>之出席，及出席委員<span class="token number">3</span>/<span class="token number">4</span>之決議，提出憲法修正案，並於公告半年後，經中華民國自由地區選舉人投票複決，有效同意票過選舉人總額之半數，即通過之。」換句話說，以<span class="token number">2020</span>年總統大選的選舉人數換算，要超過<span class="token number">965</span>萬票才算通過，外界視為超高門檻。（編輯：林克倫）<span class="token number">1100216</span>'
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    'category'<span class="token operator">:</span> '政治'
+<span class="token punctuation">}</span>
+</div></div></code></pre><p><span>The distribution of the categories is shown as follows:</span></p><p><img src="https://i.imgur.com/BtE1t5W.png" alt="" loading="lazy"></p><h1 id="III-Preprocessing" data-id="III-Preprocessing"><a class="anchor hidden-xs" href="#III-Preprocessing" title="III-Preprocessing"><span class="octicon octicon-link"></span></a><span>III. Preprocessing</span></h1><h2 id="A-Data-Cleaning" data-id="A-Data-Cleaning"><a class="anchor hidden-xs" href="#A-Data-Cleaning" title="A-Data-Cleaning"><span class="octicon octicon-link"></span></a><span>A. Data Cleaning</span></h2><p><span>We would like to remove data that may affect our model while learning, for example, the reporter at the beginning of the article: </span><code>（中央社記者溫貴香、王揚宇台北16日電）</code><span> and the editor, date information in the end of the article: </span><code>（編輯：林克倫）1100216</code><span>.</span></p><p><span>This is because it is possible that </span><code>溫貴香</code><span> or </span><code>林克倫</code><span> always write news articles in a certain category (e.g. </span><code>政治</code><span>), which would let the model learn irrelevant information. Since we want our model to be more general and can classify articles from other sources (where the editor or reporter does not belong to), we remove the respective words.</span></p><p><span>The resulting dataset looks as follows:</span></p><p><img src="https://i.imgur.com/cJW46Ab.png" alt="" loading="lazy"></p><p><span>The </span><code>category</code><span> field is what we want to predict.</span></p><h2 id="B-Text-Segmentation-and-Tokenization" data-id="B-Text-Segmentation-and-Tokenization"><a class="anchor hidden-xs" href="#B-Text-Segmentation-and-Tokenization" title="B-Text-Segmentation-and-Tokenization"><span class="octicon octicon-link"></span></a><span>B. Text Segmentation and Tokenization</span></h2><p><span>Chinese and English differ a lot in the sense that English is naturally segmented by spaces, but we have to manually separate words in Chinese.</span></p><p><span>To do so, we make use of the tool </span><a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener"><span>Jieba 中文分詞</span></a><span>, which performs text segmentation on Chinese text.</span></p><p><span>Before performing segmentation, we concatenate the title and content so that the text forms a single corpus. Then as we separate the we remove the punctuations to make the data even cleaner.</span></p><p><span>The result looks as follows:</span></p><table>
+<thead>
+<tr>
+<th><span>Before</span></th>
+<th><span>After Segmentation</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>李登輝逝世週年 日台協會設文庫專區追思 前總統李登輝逝世滿週年，日本…</span></td>
+<td><span>李登輝 逝世 週年 日台 協會 設 文庫 專區 追思 前總統 李登輝 逝世 滿週年 日本…</span></td>
+</tr>
+<tr>
+<td><span>男子捷運月台性騷擾女乘客 北院判拘役40天 一名楊姓男子去年8月間2度…</span></td>
+<td><span>男子 捷運 月台 性騷擾 女 乘客 北院 判 拘役 天 一名 楊姓 男子 去年 月間 度…</span></td>
+</tr>
+</tbody>
+</table><p><span>(I’ve also removed numbers on purpose since further processing may take numbers into account.)</span></p><h2 id="C-Splitting-the-Train-Validation-Test-set" data-id="C-Splitting-the-Train-Validation-Test-set"><a class="anchor hidden-xs" href="#C-Splitting-the-Train-Validation-Test-set" title="C-Splitting-the-Train-Validation-Test-set"><span class="octicon octicon-link"></span></a><span>C. Splitting the Train, Validation, Test set</span></h2><p><span>Since the further tf-idf preprocessing stage takes the whole dataset into consideration (which would make us </span><em><strong><span>see</span></strong></em><span> the testing data if we did it first), we split the dataset into train, test, validation here.</span></p><p><span>We first split the data set into a training dataset and a testing dataset in a ratio of 7:3, the testing set will be used to evaulate the performance of the three models later.</span></p><p><span>Then, we split the training set further using holdout validation with ratio 7:3, where the new training holds 7/10 of the orginal training set and the validation set holds 3/10.</span></p><h2 id="D-TF-IDF-term-weighting" data-id="D-TF-IDF-term-weighting"><a class="anchor hidden-xs" href="#D-TF-IDF-term-weighting" title="D-TF-IDF-term-weighting"><span class="octicon octicon-link"></span></a><span>D. TF-IDF term weighting</span></h2><p><span>After separating a piece corpus into segments of words, we want to encode the words in an article into features of a </span><em><span>document</span></em><span> (a single row in the dataframe).</span></p><p><span>Here, we use the term weighting scheme </span><strong><span>TF-IDF (Term Frequency-Inverse Document Frequency)</span></strong><span> to encode our text. TF-IDF in short, gives a word that appears frequently in one document (a high term-frequency (tf)), but not as frequent in all other documents (a high </span><strong><span>inverse</span></strong><span> document frequency (idf)) a higher weight, which can be thought of as </span><em><span>more important</span></em><span>. Then, we choose the top 10000 words with the highest frequencies as the features.</span></p><p><span>Scikit Learn provides a package function </span><code>tfidfVectorizer</code><span> to count the word frequencies then encode each article into a vector of 10000 features for us. Thus, by calling the package, it helps us to map each document in the training set to 10000 features.</span></p><p><span>In order to make sure that the mapping makes sense, we map the 10000 features to 2 dimensions using the t-SNE method, and plot the training set and its classes on it:</span></p><p><img src="https://i.imgur.com/kA74WUY.jpg" alt="" loading="lazy"></p><p><span>We can see that each category has a rough boundary that can be distinguished.</span></p><h2 id="E-Over-sampling-the-minority-classes" data-id="E-Over-sampling-the-minority-classes"><a class="anchor hidden-xs" href="#E-Over-sampling-the-minority-classes" title="E-Over-sampling-the-minority-classes"><span class="octicon octicon-link"></span></a><span>E. Over-sampling the minority classes</span></h2><p><span>Since the categories are quite unbalanced, we over-sample the minority classes to prevent mispredicting.</span></p><p><span>Originally, the testing set contains the following number of documents of each category:</span></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Count</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>2717</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>2306</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>2029</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>1949</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>470</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>243</span></td>
+</tr>
+</tbody>
+</table><p><span>We over-sample the two classes </span><code>科技</code><span> and </span><code>娛樂</code><span> to 1000 samples.</span></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Count</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>2717</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>2306</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>2029</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>1949</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><strong><span>1000</span></strong></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><strong><span>1000</span></strong></td>
+</tr>
+</tbody>
+</table><p><span>(After some experiments, the oversampling has improved about up to 50% of the recall score for the </span><code>科技</code><span> category in the Naive Bayes model, which shows that an imbalanced dataset may affect the performance a lot)</span></p><h1 id="IV-Models" data-id="IV-Models"><a class="anchor hidden-xs" href="#IV-Models" title="IV-Models"><span class="octicon octicon-link"></span></a><span>IV. Models</span></h1><p><span>We choose the three most common models to perform text classification:</span></p><ul>
+<li><span>Logistic Regression</span></li>
+<li><span>Naive Bayes</span></li>
+<li><span>Artificial Neural Networks (Multilayer Perceptron)</span></li>
+</ul><p><span>For all models, we use off-the-shelf models provided by the sckit-learn package and train it on the encoded and upsampled training set above.</span></p><p><span>Note that the validation set is encoded separately from the training set (by </span><code>tfidfVectorizer.transform</code><span>), so that we won’t take the words in the validation set into consideration while counting frequencies in tfidf.</span></p><h2 id="A-Logistic-Regression" data-id="A-Logistic-Regression"><a class="anchor hidden-xs" href="#A-Logistic-Regression" title="A-Logistic-Regression"><span class="octicon octicon-link"></span></a><span>A. Logistic Regression</span></h2><p><span>For the logistic regression model, we use the module </span><code>LogisticRegression</code><span> out of the box and train it on the augmented training set.</span></p><p><span>Then, we predict on the validation set, the obtained results are shown below:</span></p><p><img src="https://i.imgur.com/VwXMM0S.png" alt="" loading="lazy"></p><p><strong><span>Validation accuracy: 0.9551</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9499</span></td>
+<td><span>0.9371</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9400</span></td>
+<td><span>0.9483</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9614</span></td>
+<td><span>0.9724</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9806</span></td>
+<td><span>0.9829</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9512</span></td>
+<td><span>0.9466</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.8879</span></td>
+<td><span>0.8636</span></td>
+</tr>
+</tbody>
+</table><p><span>A thing worth to note is that, before oversampling the minority classes 科技 and 娛樂, the recall score was 0.53 and 0.89 respectively, which shows that most of the articles belonging to 科技 was categorized to other classes (產經 in this case). Oversampling has prevented this situation from happening, and showed a 33% of improvement in the recall score of the 科技 class. The accuracy of the model also improved from 94.52% to 95.51% for the prediction of the validation.</span></p><h2 id="B-Naive-Bayes-Classifier" data-id="B-Naive-Bayes-Classifier"><a class="anchor hidden-xs" href="#B-Naive-Bayes-Classifier" title="B-Naive-Bayes-Classifier"><span class="octicon octicon-link"></span></a><span>B. Naive Bayes Classifier</span></h2><p><span>For the Naive Bayes model, I have chose to use the </span><code>MultinomialNB</code><span> module in sckit-learn, since it is one of the most common naive bayes model used for text classification.</span></p><p><span>The prediction results are shown below:</span></p><p><img src="https://i.imgur.com/cBWnGMl.png" alt="" loading="lazy"></p><p><strong><span>Validation accuracy: 0.9352</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9039</span></td>
+<td><span>0.9229</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9211</span></td>
+<td><span>0.9252</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9519</span></td>
+<td><span>0.9552</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9815</span></td>
+<td><span>0.9680</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9208</span></td>
+<td><span>0.9029</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.9255</span></td>
+<td><span>0.7909</span></td>
+</tr>
+</tbody>
+</table><p><span>Similar to logistic regression, oversampling also showed a huge improvement in the recall score of the 科技 category, which raised from 21.48% to 79.09% (58% improvement). The overall accuracy has also improved from 92.11% to 93.52%.</span></p><h2 id="C-Artificial-Neural-Networks" data-id="C-Artificial-Neural-Networks"><a class="anchor hidden-xs" href="#C-Artificial-Neural-Networks" title="C-Artificial-Neural-Networks"><span class="octicon octicon-link"></span></a><span>C. Artificial Neural Networks</span></h2><p><span>Due to the results from the previous model, I have decided to just create a simple neural network, since a decent result could be obtained just by simple models.</span></p><p><span>The multi-layer perceptron consists of 3 layers, the input layer, output layer, and one hidden layer which includes 1024 neurons.</span></p><p><span>I have chosen adam as the optimizer with </span><span class="mathjax"><span class="MathJax_Preview" style="color: inherit;"></span><span id="MathJax-Element-17-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" style="font-size: 119%; position: relative;" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mi>&amp;#x03B1;</mi><mo>=</mo><msup><mn>10</mn><mrow class=&quot;MJX-TeXAtom-ORD&quot;><mo>&amp;#x2212;</mo><mn>5</mn></mrow></msup></math>" role="presentation"><span id="MJXc-Node-113" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-114" class="mjx-mrow"><span id="MJXc-Node-115" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.213em; padding-bottom: 0.265em;">α</span></span><span id="MJXc-Node-116" class="mjx-mo MJXc-space3"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.055em; padding-bottom: 0.318em;">=</span></span><span id="MJXc-Node-117" class="mjx-msubsup MJXc-space3"><span class="mjx-base"><span id="MJXc-Node-118" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.37em; padding-bottom: 0.37em;">10</span></span></span><span class="mjx-sup" style="font-size: 70.7%; vertical-align: 0.591em; padding-left: 0px; padding-right: 0.071em;"><span id="MJXc-Node-119" class="mjx-texatom" style=""><span id="MJXc-Node-120" class="mjx-mrow"><span id="MJXc-Node-121" class="mjx-mo"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.318em; padding-bottom: 0.423em;">−</span></span><span id="MJXc-Node-122" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.37em; padding-bottom: 0.37em;">5</span></span></span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi><mo>=</mo><msup><mn>10</mn><mrow class="MJX-TeXAtom-ORD"><mo>−</mo><mn>5</mn></mrow></msup></math></span></span><script type="math/tex" id="MathJax-Element-17">\alpha=10^{-5}</script></span><span>, the results are shown below:</span></p><p><img src="https://i.imgur.com/IvYdwIO.png" alt="" loading="lazy"></p><p><strong><span>Validation accuracy: 0.9537</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9524</span></td>
+<td><span>0.9388</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9270</span></td>
+<td><span>0.9505</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9679</span></td>
+<td><span>0.9679</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9818</span></td>
+<td><span>0.9874</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9420</span></td>
+<td><span>0.9466</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.8673</span></td>
+<td><span>0.7727</span></td>
+</tr>
+</tbody>
+</table><p><span>Surprisingly, oversampling shows almost no difference when predicting using the neural network.</span></p><h1 id="V-Results" data-id="V-Results"><a class="anchor hidden-xs" href="#V-Results" title="V-Results"><span class="octicon octicon-link"></span></a><span>V. Results</span></h1><p><span>The results of the final predictions (categorizations) on the testing set of each model are shown below.</span></p><h2 id="Logistic-Regression" data-id="Logistic-Regression"><a class="anchor hidden-xs" href="#Logistic-Regression" title="Logistic-Regression"><span class="octicon octicon-link"></span></a><span>Logistic Regression</span></h2><p><img src="https://i.imgur.com/kBGj0PR.png" alt="" loading="lazy"></p><p><strong><span>Accuracy: 0.9568</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9519</span></td>
+<td><span>0.9468</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9438</span></td>
+<td><span>0.9466</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9666</span></td>
+<td><span>0.9712</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9832</span></td>
+<td><span>0.9849</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9580</span></td>
+<td><span>0.9580</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.8523</span></td>
+<td><span>0.8380</span></td>
+</tr>
+</tbody>
+</table><h2 id="Multinomial-Naive-Bayes" data-id="Multinomial-Naive-Bayes"><a class="anchor hidden-xs" href="#Multinomial-Naive-Bayes" title="Multinomial-Naive-Bayes"><span class="octicon octicon-link"></span></a><span>Multinomial Naive Bayes</span></h2><p><img src="https://i.imgur.com/48EK5H1.png" alt="" loading="lazy"></p><p><strong><span>Accuracy: 0.9375</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9062</span></td>
+<td><span>0.9360</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9385</span></td>
+<td><span>0.9159</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9560</span></td>
+<td><span>0.9545</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9772</span></td>
+<td><span>0.9698</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9368</span></td>
+<td><span>0.9336</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.8343</span></td>
+<td><span>0.7877</span></td>
+</tr>
+</tbody>
+</table><h2 id="Artificial-Neural-Network" data-id="Artificial-Neural-Network"><a class="anchor hidden-xs" href="#Artificial-Neural-Network" title="Artificial-Neural-Network"><span class="octicon octicon-link"></span></a><span>Artificial Neural Network</span></h2><p><img src="https://i.imgur.com/BjLv7Oi.png" alt="" loading="lazy"></p><p><strong><span>Accuracy: 0.9593</span></strong></p><table>
+<thead>
+<tr>
+<th><span>Category</span></th>
+<th><span>Precision</span></th>
+<th><span>Recall</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>政治</span></td>
+<td><span>0.9532</span></td>
+<td><span>0.9498</span></td>
+</tr>
+<tr>
+<td><span>產經</span></td>
+<td><span>0.9384</span></td>
+<td><span>0.9576</span></td>
+</tr>
+<tr>
+<td><span>社會</span></td>
+<td><span>0.9720</span></td>
+<td><span>0.9720</span></td>
+</tr>
+<tr>
+<td><span>運動</span></td>
+<td><span>0.9865</span></td>
+<td><span>0.9849</span></td>
+</tr>
+<tr>
+<td><span>娛樂</span></td>
+<td><span>0.9719</span></td>
+<td><span>0.9685</span></td>
+</tr>
+<tr>
+<td><span>科技</span></td>
+<td><span>0.8812</span></td>
+<td><span>0.7877</span></td>
+</tr>
+</tbody>
+</table><h1 id="VI-Conclusion" data-id="VI-Conclusion"><a class="anchor hidden-xs" href="#VI-Conclusion" title="VI-Conclusion"><span class="octicon octicon-link"></span></a><span>VI. Conclusion</span></h1><p><span>As long as the preprocessing is done correctly and having a correctly labelled dataset, using any of the models proposed should do a decent job in classifying the news articles, thus, I think our goal can be satisfied.</span></p><p><span>In the following subsections, we look at the model prections on real world data, then we discuss the possible applications on this topic.</span></p><h2 id="A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples" data-id="A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples"><a class="anchor hidden-xs" href="#A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples" title="A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples"><span class="octicon octicon-link"></span></a><span>A. Model Prediction on Real-World Unseen Data: Categorization Examples</span></h2><p><span>Here, we fetch a few news articles as of January 13, 2022 from other news sources, and take a look at what the models will predict.</span></p><ol>
+<li><a href="https://3c.ltn.com.tw/news/47364" target="_blank" rel="noopener"><span>自由時報：台北電玩展「手遊」躍升主角！多間家機、一線遊戲公司缺席不參加 01/12/2022</span></a></li>
+</ol><blockquote>
+<p><span>台北電玩展（TGS）往年是台灣玩家必定朝聖的一大盛會，各大品牌都會在活動釋出最新情報、遊戲試玩，雖然受惠於台灣防疫有成，2021、2022 年都能舉辦實體活動，陣容卻仍受到嚴重打擊。</span><br>
+<span>2022 年台北電玩展將於 22 日開跑，今日主辦單位台北電腦公會正式公開活動內容與參展陣容，前一年被許多網友笑稱是「手遊展」，今年趨勢似乎更加明確，同時陣容更受到打擊，不僅 Sony、微軟等家機遊戲無緣展出，包含萬代、SEGA、Ubisoft 等一線遊戲公司也都沒有參加實體活動。…</span></p>
+</blockquote><table>
+<thead>
+<tr>
+<th><span>Model</span></th>
+<th><span>Logistic Regression</span></th>
+<th><span>Naive Bayes</span></th>
+<th><span>Artificial Neural Network</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Predicted Category</span></td>
+<td><span>科技</span></td>
+<td><span>產經</span></td>
+<td><span>科技</span></td>
+</tr>
+</tbody>
+</table><ol start="2">
+<li><a href="https://ec.ltn.com.tw/article/breakingnews/3797993" target="_blank" rel="noopener"><span>自由時報：證交法將修正 大股東持股5％要「全都露」01/12/2022</span></a></li>
+</ol><blockquote>
+<p><span>金管會昨天（11日）宣布，將啟動修正「證券交易法」共有2大修正內容，第1是強化我國公司持股透明化，讓藏鏡人無所遁形、大股東全都露，持股「申報」及「公告」門檻，從原本規定10%修訂為5%。第2是提高裁罰門檻，若證券商等相關機構，未建立落實內稽內控等重大缺失，罰鍰上限也將由現行480萬元拉高到600萬元。</span><br>
+<span>證交法最近一次修正為去年元月27日，而金管會今年要再度啟動修法。…</span></p>
+</blockquote><table>
+<thead>
+<tr>
+<th><span>Model</span></th>
+<th><span>Logistic Regression</span></th>
+<th><span>Naive Bayes</span></th>
+<th><span>Artificial Neural Network</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Predicted Category</span></td>
+<td><span>產經</span></td>
+<td><span>產經</span></td>
+<td><span>產經</span></td>
+</tr>
+</tbody>
+</table><ol start="3">
+<li><a href="https://www.chinatimes.com/realtimenews/20220113005093-260407?ctrack=pc_politic_headl_p01&amp;chdtv" target="_blank" rel="noopener"><span>中國時報：國民黨中常委提案改黨名 洪秀柱怒批：沒出息 01/13/2022</span></a></li>
+</ol><blockquote>
+<p><span>從四項公投到補選、罷免，國民黨在一個月內經歷了3場挫敗。國民黨有中常委提案，要修改國民黨的黨名為「台灣國民黨」。國民黨前主席洪秀柱今天（13日）對此怒斥，那是一個非常沒有出息的想法跟做法，如果黨內還是有人這樣去做，就離開這個政黨吧。洪秀柱13日受訪表示，民黨是個百年政黨，是創建中華民國的政黨，它的名字就叫中國國民黨…</span></p>
+</blockquote><table>
+<thead>
+<tr>
+<th><span>Model</span></th>
+<th><span>Logistic Regression</span></th>
+<th><span>Naive Bayes</span></th>
+<th><span>Artificial Neural Network</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Predicted Category</span></td>
+<td><span>政治</span></td>
+<td><span>政治</span></td>
+<td><span>政治</span></td>
+</tr>
+</tbody>
+</table><p><span>We can see that most results follow what we assumed the categories of the articles should be, where the first article is 科技, second is 產經, and the third being 政治.</span></p><h2 id="B-Applications" data-id="B-Applications"><a class="anchor hidden-xs" href="#B-Applications" title="B-Applications"><span class="octicon octicon-link"></span></a><span>B. Applications</span></h2><blockquote>
+<p><span>A tool to classify a set of news that come from several different sources</span></p>
+</blockquote><p><span>As I have mentioned in the introduction section, I would like to find out a generalized way to categorize/classify news articles given the title and content.</span></p><p><span>In this case, the classifier that we have trained can be used to provide a more general categorizing scheme. Therefore, if we had a database where we store news articles from many different sources, we can use any of the models to find out the category of the articles.</span></p></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li><a href="#Categorizing-Chinese-News-Articles-from-the-Web" title="Categorizing Chinese News Articles from the Web">Categorizing Chinese News Articles from the Web</a></li>
+<li><a href="#I-Introduction" title="I. Introduction">I. Introduction</a><ul class="nav">
+<li><a href="#Motivation" title="Motivation">Motivation</a></li>
+</ul>
+</li>
+<li><a href="#II-Data-Collection" title="II. Data Collection">II. Data Collection</a><ul class="nav">
+<li><a href="#A-News-Source-Selection" title="A. News Source Selection">A. News Source Selection</a></li>
+<li><a href="#B-Data-Crawling" title="B. Data Crawling">B. Data Crawling</a></li>
+</ul>
+</li>
+<li><a href="#III-Preprocessing" title="III. Preprocessing">III. Preprocessing</a><ul class="nav">
+<li><a href="#A-Data-Cleaning" title="A. Data Cleaning">A. Data Cleaning</a></li>
+<li><a href="#B-Text-Segmentation-and-Tokenization" title="B. Text Segmentation and Tokenization">B. Text Segmentation and Tokenization</a></li>
+<li><a href="#C-Splitting-the-Train-Validation-Test-set" title="C. Splitting the Train, Validation, Test set">C. Splitting the Train, Validation, Test set</a></li>
+<li><a href="#D-TF-IDF-term-weighting" title="D. TF-IDF term weighting">D. TF-IDF term weighting</a></li>
+<li><a href="#E-Over-sampling-the-minority-classes" title="E. Over-sampling the minority classes">E. Over-sampling the minority classes</a></li>
+</ul>
+</li>
+<li><a href="#IV-Models" title="IV. Models">IV. Models</a><ul class="nav">
+<li><a href="#A-Logistic-Regression" title="A. Logistic Regression">A. Logistic Regression</a></li>
+<li><a href="#B-Naive-Bayes-Classifier" title="B. Naive Bayes Classifier">B. Naive Bayes Classifier</a></li>
+<li><a href="#C-Artificial-Neural-Networks" title="C. Artificial Neural Networks">C. Artificial Neural Networks</a></li>
+</ul>
+</li>
+<li><a href="#V-Results" title="V. Results">V. Results</a><ul class="nav">
+<li><a href="#Logistic-Regression" title="Logistic Regression">Logistic Regression</a></li>
+<li><a href="#Multinomial-Naive-Bayes" title="Multinomial Naive Bayes">Multinomial Naive Bayes</a></li>
+<li><a href="#Artificial-Neural-Network" title="Artificial Neural Network">Artificial Neural Network</a></li>
+</ul>
+</li>
+<li><a href="#VI-Conclusion" title="VI. Conclusion">VI. Conclusion</a><ul class="nav">
+<li><a href="#A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples" title="A. Model Prediction on Real-World Unseen Data: Categorization Examples">A. Model Prediction on Real-World Unseen Data: Categorization Examples</a></li>
+<li><a href="#B-Applications" title="B. Applications">B. Applications</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
+        <div class="toc"><ul class="nav">
+<li><a href="#Categorizing-Chinese-News-Articles-from-the-Web" title="Categorizing Chinese News Articles from the Web">Categorizing Chinese News Articles from the Web</a></li>
+<li><a href="#I-Introduction" title="I. Introduction">I. Introduction</a><ul class="nav">
+<li><a href="#Motivation" title="Motivation">Motivation</a></li>
+</ul>
+</li>
+<li><a href="#II-Data-Collection" title="II. Data Collection">II. Data Collection</a><ul class="nav">
+<li><a href="#A-News-Source-Selection" title="A. News Source Selection">A. News Source Selection</a></li>
+<li><a href="#B-Data-Crawling" title="B. Data Crawling">B. Data Crawling</a></li>
+</ul>
+</li>
+<li><a href="#III-Preprocessing" title="III. Preprocessing">III. Preprocessing</a><ul class="nav">
+<li><a href="#A-Data-Cleaning" title="A. Data Cleaning">A. Data Cleaning</a></li>
+<li><a href="#B-Text-Segmentation-and-Tokenization" title="B. Text Segmentation and Tokenization">B. Text Segmentation and Tokenization</a></li>
+<li><a href="#C-Splitting-the-Train-Validation-Test-set" title="C. Splitting the Train, Validation, Test set">C. Splitting the Train, Validation, Test set</a></li>
+<li><a href="#D-TF-IDF-term-weighting" title="D. TF-IDF term weighting">D. TF-IDF term weighting</a></li>
+<li><a href="#E-Over-sampling-the-minority-classes" title="E. Over-sampling the minority classes">E. Over-sampling the minority classes</a></li>
+</ul>
+</li>
+<li><a href="#IV-Models" title="IV. Models">IV. Models</a><ul class="nav">
+<li><a href="#A-Logistic-Regression" title="A. Logistic Regression">A. Logistic Regression</a></li>
+<li><a href="#B-Naive-Bayes-Classifier" title="B. Naive Bayes Classifier">B. Naive Bayes Classifier</a></li>
+<li><a href="#C-Artificial-Neural-Networks" title="C. Artificial Neural Networks">C. Artificial Neural Networks</a></li>
+</ul>
+</li>
+<li><a href="#V-Results" title="V. Results">V. Results</a><ul class="nav">
+<li><a href="#Logistic-Regression" title="Logistic Regression">Logistic Regression</a></li>
+<li><a href="#Multinomial-Naive-Bayes" title="Multinomial Naive Bayes">Multinomial Naive Bayes</a></li>
+<li><a href="#Artificial-Neural-Network" title="Artificial Neural Network">Artificial Neural Network</a></li>
+</ul>
+</li>
+<li><a href="#VI-Conclusion" title="VI. Conclusion">VI. Conclusion</a><ul class="nav">
+<li><a href="#A-Model-Prediction-on-Real-World-Unseen-Data-Categorization-Examples" title="A. Model Prediction on Real-World Unseen Data: Categorization Examples">A. Model Prediction on Real-World Unseen Data: Categorization Examples</a></li>
+<li><a href="#B-Applications" title="B. Applications">B. Applications</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
