@@ -11,5 +11,5 @@ In this project, we explore the machine learning pipeline and utilize 3 differen
 6. 政治 (Politics)
 
 The news articles are obtained from [CNA](https://www.cna.com.tw/).
-We show that after proper data preprocessing, we can achieve a descent accuracy of at least 93% using any of the three models.
+We show that after proper data preprocessing, we can achieve a decent accuracy of at least 93% using any of the three models.
 See the [report](./report/README.md) for more details.
